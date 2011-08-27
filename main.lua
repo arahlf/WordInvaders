@@ -1,10 +1,11 @@
 require 'middleclass'
 require 'spaceship'
 require 'missile'
-
+require 'turret'
 
 local ship = SpaceShip:new()
 local missiles = {};
+local turret = Turret:new()
 
 function love.draw()
     -- draw the missiles
@@ -17,6 +18,8 @@ function love.draw()
 
     ship:move()
     ship:draw()
+
+    turret:draw()
 end
 
 function love.load()

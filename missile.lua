@@ -10,7 +10,7 @@ Missile = class('Missile')
 function Missile:initialize(target)
     self.target = target
     self.x = love.graphics.getWidth() / 2 - (img:getWidth() / 2)
-    self.y = love.graphics.getHeight() - img:getHeight()
+    self.y = love.graphics.getHeight() - img:getHeight() - 20
     self.speed = 10
     self.radians = 0
     self.streaks = {}
