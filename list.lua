@@ -27,3 +27,7 @@ end
 function List:iterator()
     return Iterator:new(self)
 end
+
+function List:getTable()
+    return self.items
+end

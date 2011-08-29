@@ -1,42 +1,42 @@
 require 'middleclass'
+require 'imageentity'
+require 'images'
 require 'streak'
+require 'list'
+require 'colors'
 
-local img = love.graphics.newImage('resources/images/missile.png')
-local OFFSET_RADIANS = 2 * math.pi / 4
+Missile = class('Missile', ImageEntity)
 
+function Missile:initialize(point, target, speed)
+    Missile.superclass.initialize(self, point, Images.MISSILE)
 
-Missile = class('Missile')
-
-function Missile:initialize(target)
-    self.target = target
-    self.x = love.graphics.getWidth() / 2 - (img:getWidth() / 2)
-    self.y = love.graphics.getHeight() - img:getHeight() - 20
-    self.speed = 10
-    self.radians = 0
-    self.streaks = {}
+    self._target = target
+    self._speed = speed 
+    self._streaks = List:new()
+    self._rotation = 0
 end
 
-local count = 0
+function Missile:update()
+    local dx = (self._target:getX() + self._target:getWidth() / 2) - (self:getX() + self:getWidth() / 2)
+    local dy = self._target:getY() + self._target:getHeight() / 2 - self:getY()
+    self._rotation = math.atan2(dy, dx)
 
-function Missile:move()
-    local dx = (self.target.x + self.target.img:getWidth() / 2) - (self.x + img:getWidth() / 2)
-    local dy = self.target.y + self.target.img:getHeight() / 2 - self.y
-    self.radians = math.atan2(dy, dx)
+    self._streaks:add(Streak(self:getLocation()))
 
-    table.insert(self.streaks, Streak:new(self.x + img:getWidth() / 2, self.y))
-
-    self.x = self.x + math.cos(self.radians) * self.speed
-    self.y = self.y + math.sin(self.radians) * self.speed
-end
-
-function Missile:isDestroyed()
-    return self.y <= self.target.y + self.target.img:getHeight()
+    self:setLocation(self:getX() + math.cos(self._rotation) * self._speed,
+                     self:getY() + math.sin(self._rotation) * self._speed)
+    
+    if (self:getY() <= self._target:getY() + self._target:getHeight()) then
+        self:setAlive(false)
+        self._target:setAlive(false)
+    end
+    
+    self:updateEntities(self._streaks)
 end
 
 function Missile:draw()
-    for index, streak in pairs(self.streaks) do
-        streak:draw()
-    end
+    self:drawEntities(self._streaks)
 
-    love.graphics.draw(img, self.x, self.y, self.radians + OFFSET_RADIANS)
+    Colors.WHITE:set()
+    love.graphics.draw(self:getImage(), self:getX(), self:getY(), self._rotation + math.pi / 2, 1, 1, self:getWidth() / 2)
 end

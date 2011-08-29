@@ -2,32 +2,55 @@ require 'middleclass'
 require 'spaceship'
 require 'missile'
 require 'turret'
+require 'bomb'
+require 'images'
+require 'list'
+require 'missilefactory'
+require 'entity'
+require 'point'
 
-local ship = SpaceShip:new()
-local missiles = {};
-local turret = Turret:new()
+local ship = SpaceShip()
+local turret = Turret(Point(love.graphics.getWidth() / 2, love.graphics.getHeight()), MissileFactory())
+
+enemies = List()
 
 function love.draw()
-    -- draw the missiles
-    for index, missile in pairs(missiles) do
-        if (missile:isDestroyed() == false) then
-            missile:move()
-            missile:draw()
-        end
+    for index, enemy in ipairs(enemies:getTable()) do
+        enemy:draw()
     end
 
-    ship:move()
-    ship:draw()
-
     turret:draw()
+    ship:draw()
 end
 
 function love.load()
-    love.graphics.setBackgroundColor(225, 225, 225)
+    math.randomseed(os.time());
+
+    love.graphics.setBackgroundColor(255, 255, 255)
 end
 
 function love.keypressed(key, unicode)
-    if (key == ' ') then
-        table.insert(missiles, Missile:new(ship))
+    for index, enemy in ipairs(enemies:getTable()) do
+        if enemy._char:lower() == key then
+            turret:fireMissile(enemy)
+            break
+        end
     end
+end
+
+function love.update()
+    local iterator = enemies:iterator()
+
+    while(iterator:hasNext()) do
+        local enemy = iterator:next()
+
+        if (enemy:isAlive()) then
+            enemy:update()
+        else
+            iterator:remove()
+        end
+    end
+
+    turret:update()
+    ship:update()
 end
