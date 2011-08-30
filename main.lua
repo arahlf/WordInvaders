@@ -26,6 +26,9 @@ end
 function love.load()
     math.randomseed(os.time());
 
+    font = love.graphics.newFont('resources/fonts/arialbd.ttf', 14)
+    love.graphics.setFont(font)
+
     love.graphics.setBackgroundColor(255, 255, 255)
 end
 

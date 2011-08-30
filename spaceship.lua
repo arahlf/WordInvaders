@@ -34,7 +34,7 @@ function SpaceShip:update()
 
     self:moveX( (math.abs(distance) > self._speed and self._speed or math.abs(distance)) * sign )
 
-    if (math.random() < .05) then
+    if (math.random() < .04) then
         enemies:add(Bomb(Point(self:getX() + self:getWidth() / 2, self:getY() + self:getHeight() / 2)))
     end
 end

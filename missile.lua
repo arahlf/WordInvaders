@@ -19,6 +19,7 @@ end
 function Missile:update()
     local dx = (self._target:getX() + self._target:getWidth() / 2) - (self:getX() + self:getWidth() / 2)
     local dy = self._target:getY() + self._target:getHeight() / 2 - self:getY()
+
     self._rotation = math.atan2(dy, dx)
 
     self._streaks:add(Streak(self:getLocation()))

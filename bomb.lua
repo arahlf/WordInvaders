@@ -8,7 +8,7 @@ function Bomb:initialize(point)
     Bomb.superclass.initialize(self, point, Images.BOMB)
 
     self._speed = 2
-    self._char = string.char(math.random(65, 90))
+    self._char = string.char(math.random(97, 122))
 end
 
 function Bomb:update()
@@ -21,8 +21,9 @@ end
 
 function Bomb:draw()
     Colors.WHITE:set()
-    love.graphics.draw(self:getImage(), self:getX(), self:getY())
+    love.graphics.draw(self:getImage(), self:getX(), self:getY(), 0, 1, 1, self:getWidth() / 2, self:getHeight() / 2)
+
 
     love.graphics.setColor(0, 0, 0)
-    love.graphics.print(self._char, self:getX() + 7, self:getY() + 4)
+    love.graphics.print(self._char, self:getX() - font:getWidth(self._char) / 2, self:getY() - font:getHeight(self._char) / 2)
 end
