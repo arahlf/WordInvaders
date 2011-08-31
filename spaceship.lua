@@ -9,10 +9,13 @@ require 'point'
 SpaceShip = class('SpaceShip', ImageEntity)
 
 function SpaceShip:initialize()
-    SpaceShip.superclass.initialize(self, Point(0, 0), Images.SPACESHIP)
+    SpaceShip.superclass.initialize(self, Point(200, 20), Images.SPACESHIP)
 
     self._speed = 4;
     self._target = self:getNewTarget()
+    self._minFramesPerBomb = 10
+    self._framesSinceLastBomb = 0
+    self._fired = false
 end
 
 function SpaceShip:draw()
@@ -34,7 +37,11 @@ function SpaceShip:update()
 
     self:moveX( (math.abs(distance) > self._speed and self._speed or math.abs(distance)) * sign )
 
-    if (math.random() < .04) then
+    if (math.random() < .05 and self._framesSinceLastBomb >= self._minFramesPerBomb) then
+        self._framesSinceLastBomb = 0
+        self._fired = true
         enemies:add(Bomb(Point(self:getX() + self:getWidth() / 2, self:getY() + self:getHeight() / 2)))
     end
+
+    self._framesSinceLastBomb = self._framesSinceLastBomb  + 1
 end

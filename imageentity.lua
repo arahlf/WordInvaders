@@ -20,3 +20,7 @@ end
 function ImageEntity:getImage()
     return self._image
 end
+
+function ImageEntity:getCenter()
+    return Point(self:getX() + self:getWidth() / 2, self:getY() + self:getHeight() / 2)
+end

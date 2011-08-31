@@ -8,8 +8,12 @@ require 'list'
 require 'missilefactory'
 require 'entity'
 require 'point'
+require 'utils'
+require 'fonts'
 
 local ship = SpaceShip()
+local lastUpdate = 0
+local fps
 local turret = Turret(Point(love.graphics.getWidth() / 2, love.graphics.getHeight()), MissileFactory())
 
 enemies = List()
@@ -19,15 +23,17 @@ function love.draw()
         enemy:draw()
     end
 
-    turret:draw()
     ship:draw()
+    turret:draw()
+
+    Colors.BLACK:set()
+    Fonts.DIAGNOSTICS:set()
+    love.graphics.print("FPS: " .. fps, 2, 0)
 end
 
 function love.load()
     math.randomseed(os.time());
-
-    font = love.graphics.newFont('resources/fonts/arialbd.ttf', 14)
-    love.graphics.setFont(font)
+    math.random() math.random() math.random()
 
     love.graphics.setBackgroundColor(255, 255, 255)
 end
@@ -41,7 +47,14 @@ function love.keypressed(key, unicode)
     end
 end
 
-function love.update()
+function love.update(dt)
+    local seconds = os.time()
+
+    if (seconds > lastUpdate) then
+        fps = math.floor((1 / dt))
+        lastUpdate = seconds
+    end
+
     local iterator = enemies:iterator()
 
     while(iterator:hasNext()) do
