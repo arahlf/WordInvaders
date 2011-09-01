@@ -29,7 +29,7 @@ function Entity:getLocation()
 end
 
 function Entity:setLocation(x, y)
-    self._point = tonumber(x) ~= nil and Point(x, y) or x -- crud overloading
+    self._point = tonumber(x) ~= nil and Point(x, y) or x -- crude overloading
 end
 
 function Entity:moveX(distance)
