@@ -13,14 +13,40 @@ require 'fonts'
 require 'interface'
 require 'enemy'
 require 'fpscounter'
+require 'tableextras'
 
 local ship = SpaceShip()
 local lastUpdate = 0
 local fps
-local turret = Turret(Point(love.graphics.getWidth() / 2, love.graphics.getHeight()), MissileFactory())
+
+local width = love.graphics.getWidth()
+local height = love.graphics.getHeight()
+local third = width / 3
+
+turrets = {
+    Turret(Point(third - third / 2, height), MissileFactory()),
+    Turret(Point(third * 2 - third / 2, height), MissileFactory()),
+    Turret(Point(third * 3 - third / 2, height), MissileFactory())
+}
 
 enemies = List()
+attacked = {}
 missed = 0
+
+function getClosetTurret(enemy)
+    local distance
+    local closestTurret
+
+    for index, turret in ipairs(turrets) do
+        local turretDistance = Utils.getDistance(turret:getLocation(), enemy:getLocation())
+        if (distance == nil or turretDistance < distance) then
+            distance = turretDistance
+            closestTurret = turret
+        end
+    end
+
+    return closestTurret
+end
 
 function love.draw()
     for index, enemy in ipairs(enemies:getTable()) do
@@ -28,7 +54,10 @@ function love.draw()
     end
 
     ship:draw()
-    turret:draw()
+
+    for key, turret in pairs(turrets) do
+        turret:draw()
+    end
 
     FPSCounter:draw()
 
@@ -44,12 +73,19 @@ function love.load()
     Interface.implement(Bomb, Enemy)
 
     love.graphics.setBackgroundColor(255, 255, 255)
+
+
+    print(love.graphics.getWidth())
+    print(third - third / 2)
+    print(third * 2 - third / 2)
+    print(third * 3 - third / 2)
 end
 
 function love.keypressed(key, unicode)
     for index, enemy in ipairs(enemies:getTable()) do
-        if enemy._char:lower() == key and not enemy._targeted then
-            turret:fireMissile(enemy)
+        if enemy._char:lower() == key and not table.contains(attacked, enemy) then
+            getClosetTurret(enemy):fireMissile(enemy)
+            table.insert(attacked, enemy)
             enemy:highlight()
             break
         end
@@ -71,6 +107,9 @@ function love.update(dt)
         end
     end
 
-    turret:update()
+    for key, turret in pairs(turrets) do
+        turret:update()
+    end
+
     ship:update()
 end

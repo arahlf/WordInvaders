@@ -29,7 +29,7 @@ function Bomb:draw()
     local font = love.graphics.getFont()
 
     love.graphics.setColor(0, 0, 0)
-    love.graphics.print(self._char, self:getX() - font:getWidth(self._char) / 2, self:getY() - font:getHeight(self._char) / 2)
+    love.graphics.print(self._char, (self:getX() - font:getWidth(self._char) / 2) -1, (self:getY() - font:getHeight(self._char) / 2) - 1)
 end
 
 function Bomb:highlight()

@@ -13,7 +13,7 @@ function FPSCounter:update(dt)
     local seconds = os.time()
 
     if (seconds > self._lastUpdate) then
-        self._fps = math.floor((1 / dt))
+        self._fps = math.floor(1 / dt)
         self._lastUpdate = seconds
     end
 end

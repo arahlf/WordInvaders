@@ -1,6 +1,6 @@
 require 'middleclass'
 
-Font = class('Font')
+local Font = class('Font')
 
 function Font:initialize(fileName, size)
     self._font = love.graphics.newFont(fileName, size)

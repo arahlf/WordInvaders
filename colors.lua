@@ -1,6 +1,6 @@
 require 'middleclass'
 
-Color = class('Color')
+local Color = class('Color')
 
 function Color:initialize(r, g, b, a)
     self._r = r
