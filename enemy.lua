@@ -1,4 +1,10 @@
+local __FUNCTION__ = function() end
+
 Enemy = {
-    highlight = function() end,
-    getThreatLevel = function() end
+    focus = __FUNCTION__,
+    unfocus = __FUNCTION__,
+    getThreatLevel = __FUNCTION__,
+    getWordLength = __FUNCTION__,
+    getNextLetter = __FUNCTION__,
+    removeNextLetter = __FUNCTION__
 }

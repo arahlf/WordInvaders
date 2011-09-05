@@ -27,3 +27,8 @@ function Utils.hitTest(entity1, entity2)
 
     return distance < 25 -- totally arbitrary...
 end
+
+function Utils.moveTowards(location, destination, factor)
+    local angle = Utils.getAngle(location, destination)
+    return Utils.translatePoint(location, angle, factor)
+end
