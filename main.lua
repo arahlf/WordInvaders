@@ -84,12 +84,19 @@ function love.load()
 end
 
 function love.keypressed(key, unicode)
-    if (key == 'escape') then
+    if (key == 'w' and love.keyboard.isDown('lctrl')) then
+        love.event.push('q') -- quit the game
+    
+    elseif (key == 'tab') then
+        if (focusedEnemy ~= nil) then
+            focusedEnemy:unfocus()
+            focusedEnemy = nil
+        end
+    
+    elseif (key == 'escape') then
         paused = not paused
-        return
-    end
 
-    if (not paused) then
+    elseif (not paused) then
         if (focusedEnemy ~= nil) then
             if (focusedEnemy:getNextLetter() == key) then
                 focusedEnemy:removeNextLetter()
