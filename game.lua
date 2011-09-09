@@ -5,11 +5,11 @@ require 'missilefactory'
 require 'turret'
 require 'spaceship'
 require 'tableextras'
+require 'threat'
 
 game = GameState()
 
 game.entities = {}
-game.enemies = {}
 game.missed = 0
 
 game.turrets = {
@@ -22,9 +22,28 @@ table.insert(game.entities, game.turrets[1])
 table.insert(game.entities, game.turrets[2])
 table.insert(game.entities, game.turrets[3])
 
+game.enemies = {}
+
 local paused = false
 local attacked = {}
 local focusedEnemy
+
+for index, level in pairs(Threat) do
+    game.enemies[level] = {}
+end
+
+local function findNewEnemy(letter)
+    local index = #game.enemies
+
+    for i = #game.enemies, 1, -1 do
+        local bucket = game.enemies[i]
+        for index, enemy in ipairs(bucket) do
+            if enemy:getNextLetter() == letter and not table.contains(attacked, enemy) then
+                return enemy
+            end
+        end
+    end
+end
 
 function game:update(dt)
     if not paused then
@@ -72,19 +91,18 @@ function game:keypressed(key, unicode)
                 end
             end
         else
-            for index, enemy in ipairs(self.enemies) do
-                if enemy:getNextLetter() == key and not table.contains(attacked, enemy) then
-                    enemy:removeNextLetter()
+            local enemy = findNewEnemy(key)
 
-                    if (enemy:getWordLength() == 0) then
-                        getClosetTurret(enemy):fireMissile(enemy)
-                        table.insert(attacked, enemy)
-                        enemy:focus()
-                    else
-                        enemy:focus()
-                        focusedEnemy = enemy
-                    end
-                    break
+            if (enemy ~= nil) then
+                enemy:removeNextLetter()
+
+                if (enemy:getWordLength() == 0) then
+                    getClosetTurret(enemy):fireMissile(enemy)
+                    table.insert(attacked, enemy)
+                    enemy:focus()
+                else
+                    enemy:focus()
+                    focusedEnemy = enemy
                 end
             end
         end
@@ -102,12 +120,12 @@ end
 
 function game:addEnemy(enemy)
     self:addEntity(enemy)
-    table.insert(self.enemies, enemy)
+    table.insert(self.enemies[enemy:getThreatLevel()], enemy)
 end
 
 function game:removeEnemy(enemy)
     self:removeEntity(enemy)
-    table.removeItem(self.enemies, enemy)
+    --table.removeItem(self.enemies, enemy)
 end
 
 game:addEnemy(SpaceShip())
