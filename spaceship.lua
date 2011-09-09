@@ -10,16 +10,26 @@ require 'threat'
 require 'interface'
 require 'enemy'
 
+
+local words = {}
+
+for word in love.filesystem.lines('dictionary.txt') do
+    if #word > 2 and #word < 8 then
+        table.insert(words, word)
+    end
+end
+
+
 SpaceShip = class('SpaceShip', ImageEntity)
 
 function SpaceShip:initialize()
     SpaceShip.superclass.initialize(self, Point(20, 20), Images.SPACESHIP)
 
-    self._speed = 3;
+    self._speed = 2;
     self._target = self:getNewTarget()
     self._minFramesPerBomb = 10
     self._lastDrop = os.time() - 1
-    self._word = 'buddy'
+    self._word = words[math.random(1, #words)]
 end
 
 function SpaceShip:draw()
@@ -52,8 +62,8 @@ function SpaceShip:update()
 
     if (time > self._lastDrop + 1) then
         self._lastDrop = time
-        local bomb = Bomb(Point(self:getX() + self:getWidth() / 2, self:getY() + self:getHeight()), turrets[math.random(1, #turrets)])
-        enemies:add(bomb)
+        local bomb = Bomb(Point(self:getX() + self:getWidth() / 2, self:getY() + self:getHeight()), game.turrets[math.random(1, #game.turrets)])
+        game:addEnemy(bomb)
     end
 end
 

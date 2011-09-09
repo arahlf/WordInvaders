@@ -7,3 +7,12 @@ function table.contains(table, item)
 
     return false
 end
+
+function table.removeItem(tbl, item)
+    for index, value in ipairs(tbl) do
+        if (value == item) then
+            table.remove(tbl, index)
+            return
+        end
+    end
+end

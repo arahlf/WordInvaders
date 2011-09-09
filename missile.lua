@@ -36,6 +36,7 @@ function Missile:update()
     if (Utils.hitTest(self, self._target)) then
         self:setAlive(false)
         self._target:setAlive(false)
+        game:removeEnemy(self._target)
     end
     
     self:updateEntities(self._streaks)

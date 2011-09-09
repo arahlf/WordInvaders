@@ -21,7 +21,8 @@ function Bomb:update()
 
     if (Utils.getDistance(self:getLocation(), self._target:getLocation()) <= 50) then
         self:setAlive(false)
-        missed = missed + 1
+        game:removeEnemy(self)
+        game.missed = game.missed + 1
     end
 end
 
