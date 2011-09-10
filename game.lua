@@ -27,6 +27,7 @@ local paused = false
 local attacked = {}
 local focusedEnemy
 local score = 0
+local lastShip = -1
 
 for index, level in pairs(Threat) do
     game.enemies[level] = {}
@@ -48,6 +49,13 @@ end
 function game:update(dt)
     if not paused then
         local updating = true -- TODO use in conjunction with remove
+
+        local time = love.timer.getTime()
+
+        if (time >= lastShip + 4) then
+            lastShip = time
+            self:addEnemy(SpaceShip())
+        end
 
         for index, entity in ipairs(self.entities) do
             entity:update(dt)
@@ -133,5 +141,3 @@ function game:removeEnemy(enemy)
     self:removeEntity(enemy)
     --table.removeItem(self.enemies, enemy)
 end
-
-game:addEnemy(SpaceShip())
