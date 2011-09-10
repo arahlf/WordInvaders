@@ -30,6 +30,7 @@ function SpaceShip:initialize()
     self._minFramesPerBomb = 10
     self._lastDrop = os.time() - 1
     self._word = words[math.random(1, #words)]
+    self._pointValue = #self._word
 end
 
 function SpaceShip:draw()
@@ -93,6 +94,10 @@ end
 
 function SpaceShip:removeNextLetter()
     self._word = self._word:sub(2)
+end
+
+function SpaceShip:getPointValue()
+    return self._pointValue
 end
 
 Interface.implement(SpaceShip, Enemy)

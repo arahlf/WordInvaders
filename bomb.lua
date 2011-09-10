@@ -22,7 +22,6 @@ function Bomb:update()
     if (Utils.getDistance(self:getLocation(), self._target:getLocation()) <= 50) then
         self:setAlive(false)
         game:removeEnemy(self)
-        game.missed = game.missed + 1
     end
 end
 
@@ -59,6 +58,10 @@ end
 
 function Bomb:removeNextLetter()
     self._letter = nil
+end
+
+function Bomb:getPointValue()
+    return 1
 end
 
 Interface.implement(Bomb, Enemy)

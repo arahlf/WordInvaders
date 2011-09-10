@@ -10,7 +10,6 @@ require 'threat'
 game = GameState()
 
 game.entities = {}
-game.missed = 0
 
 game.turrets = {
     Turret(Point(200, 600)),
@@ -27,6 +26,7 @@ game.enemies = {}
 local paused = false
 local attacked = {}
 local focusedEnemy
+local score = 0
 
 for index, level in pairs(Threat) do
     game.enemies[level] = {}
@@ -62,8 +62,8 @@ function game:draw()
 
     Colors.BLACK:set()
     Fonts.DIAGNOSTICS:set()
-    local missedText = "Missed: " .. self.missed
-    love.graphics.print(missedText, love.graphics.getWidth() - love.graphics.getFont():getWidth(missedText) - 5, 0)
+    local scoreText = "Score: " .. score
+    love.graphics.print(scoreText, love.graphics.getWidth() - love.graphics.getFont():getWidth(scoreText) - 5, 0)
     love.graphics.print("FPS: " .. love.timer.getFPS(), 2, 0)
 end
 
@@ -85,10 +85,13 @@ function game:keypressed(key, unicode)
                 if (focusedEnemy:getWordLength() == 0) then
                     getClosetTurret(focusedEnemy):fireMissile(focusedEnemy)
                     table.insert(attacked, focusedEnemy)
+                    score = score + focusedEnemy:getPointValue()
                     focusedEnemy:unfocus()
                     focusedEnemy = nil
                     self:addEnemy(SpaceShip())
                 end
+            else
+                score = score - 1
             end
         else
             local enemy = findNewEnemy(key)
@@ -99,11 +102,14 @@ function game:keypressed(key, unicode)
                 if (enemy:getWordLength() == 0) then
                     getClosetTurret(enemy):fireMissile(enemy)
                     table.insert(attacked, enemy)
+                    score = score + enemy:getPointValue()
                     enemy:focus()
                 else
                     enemy:focus()
                     focusedEnemy = enemy
                 end
+            else
+                score = score - 1
             end
         end
         

@@ -6,5 +6,6 @@ Enemy = {
     getThreatLevel = __FUNCTION__,
     getWordLength = __FUNCTION__,
     getNextLetter = __FUNCTION__,
-    removeNextLetter = __FUNCTION__
+    removeNextLetter = __FUNCTION__,
+    getPointValue = __FUNCTION__
 }
