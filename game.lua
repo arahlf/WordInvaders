@@ -86,8 +86,14 @@ function game:keypressed(key, unicode)
         paused = not paused
 
     elseif (not paused) then
+        local letter = key
+
+        if (love.keyboard.isDown('lshift') or love.keyboard.isDown('rshift')) then
+            letter = letter:upper()
+        end
+
         if (focusedEnemy ~= nil) then
-            if (focusedEnemy:getNextLetter() == key) then
+            if (focusedEnemy:getNextLetter() == letter) then
                 focusedEnemy:removeNextLetter()
 
                 if (focusedEnemy:getWordLength() == 0) then
@@ -102,7 +108,7 @@ function game:keypressed(key, unicode)
                 score = score - 1
             end
         else
-            local enemy = findNewEnemy(key)
+            local enemy = findNewEnemy(letter)
 
             if (enemy ~= nil) then
                 enemy:removeNextLetter()
