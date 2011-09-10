@@ -1,5 +1,6 @@
 require 'gamestatemanager'
 require 'game'
+require 'intro'
 require 'fonts'
 
 function getClosetTurret(enemy)
@@ -26,7 +27,7 @@ function love.load()
     love.graphics.setBackgroundColor(255, 255, 255)
 
     GameStateManager:init()
-    GameStateManager:switch(game)
+    GameStateManager:switch(intro)
 end
 
 function love.keypressed(key, unicode)
