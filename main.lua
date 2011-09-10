@@ -18,6 +18,8 @@ function getClosetTurret(enemy)
 end
 
 function love.load()
+    love.graphics.setCaption('Word Invaders')
+
     math.randomseed(os.time());
     math.random() math.random() math.random()
 
