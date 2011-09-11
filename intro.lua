@@ -8,13 +8,9 @@ intro = GameState()
 
 local message = 'Press spacebar to begin.'
 
-function intro:update(dt)
-
-end
-
 function intro:draw()
     Colors.BLACK:set()
-    Fonts.INTRO:set()
+    Fonts.HEADING:set()
 
     local font = love.graphics.getFont()
     local xPos = (love.graphics.getWidth() - font:getWidth(message)) / 2

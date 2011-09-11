@@ -21,7 +21,10 @@ function Bomb:update()
 
     if (Utils.getDistance(self:getLocation(), self._target:getLocation()) <= 50) then
         self:setAlive(false)
-        game:removeEnemy(self)
+        
+        if (self._target:isAlive()) then
+            self._target:setAlive(false)
+        end
     end
 end
 

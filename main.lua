@@ -1,6 +1,7 @@
 require 'gamestatemanager'
 require 'game'
 require 'intro'
+require 'gameover'
 require 'fonts'
 
 function getClosetTurret(enemy)

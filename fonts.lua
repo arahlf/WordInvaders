@@ -13,6 +13,6 @@ end
 
 Fonts = {
     DIAGNOSTICS = Font('resources/fonts/consola.ttf', 12),
-    INTRO = Font('resources/fonts/consola.ttf', 24),
+    HEADING = Font('resources/fonts/consola.ttf', 30),
     DEFAULT = Font('resources/fonts/arialbd.ttf', 14)
 }
