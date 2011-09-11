@@ -6,7 +6,7 @@ require 'fonts'
 
 intro = GameState()
 
-local message = 'Press spacebar to continue.'
+local message = 'Press spacebar to begin.'
 
 function intro:update(dt)
 
