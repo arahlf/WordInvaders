@@ -4,21 +4,6 @@ require 'intro'
 require 'gameover'
 require 'fonts'
 
-function getClosetTurret(enemy)
-    local distance
-    local closestTurret
-
-    for index, turret in ipairs(game.turrets) do
-        local turretDistance = Utils.getDistance(turret:getLocation(), enemy:getLocation())
-        if (distance == nil or turretDistance < distance) then
-            distance = turretDistance
-            closestTurret = turret
-        end
-    end
-
-    return closestTurret
-end
-
 function love.load()
     love.graphics.setCaption('Word Invaders')
 
