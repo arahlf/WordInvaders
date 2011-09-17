@@ -55,7 +55,8 @@ local function getClosetTurret(enemy)
 
     for index, turret in ipairs(game.turrets) do
         local turretDistance = Utils.getDistance(turret:getLocation(), enemy:getLocation())
-        if (distance == nil or turretDistance < distance) then
+        
+        if (turret:isAlive() and (distance == nil or turretDistance < distance)) then
             distance = turretDistance
             closestTurret = turret
         end
