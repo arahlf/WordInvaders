@@ -14,9 +14,7 @@ require 'enemy'
 local words = {}
 
 for word in love.filesystem.lines('dictionary.txt') do
-    if #word > 2 and #word < 8 then
-        table.insert(words, word)
-    end
+    table.insert(words, word)
 end
 
 
